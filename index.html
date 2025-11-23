@@ -576,6 +576,58 @@
         </div>
     </main>
 
+    <footer class="bg-gray-800 text-white mt-12 pt-10 pb-6">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8 border-b border-gray-700 pb-8 mb-6">
+                
+                <div>
+                    <h4 class="text-lg font-semibold mb-3 text-pink-400">📅 สรุปแผนการเดินทาง</h4>
+                    <ul class="text-sm space-y-2">
+                        <li><span class="font-medium">ปลายทาง:</span> เซี่ยงไฮ้, จีน</li>
+                        <li><span class="font-medium">ช่วงเวลา:</span> 13 - 17 ตุลาคม 2025 (5 วัน)</li>
+                        <li><span class="font-medium">สายการบิน:</span> Thai AirAsia X (XJ)</li>
+                        <li><span class="font-medium">สนามบิน:</span> PVG (ผู่ตง)</li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="text-lg font-semibold mb-3 text-blue-400">🗺️ สถานที่น่าสนใจหลัก</h4>
+                    <ul class="text-sm space-y-2">
+                        <li><a href="#" class="hover:text-pink-300 transition duration-200">The Bund (外滩)</a></li>
+                        <li><a href="#" class="hover:text-pink-300 transition duration-200">Shanghai Disneyland</a></li>
+                        <li><a href="#" class="hover:text-pink-300 transition duration-200">Yu Garden (豫园)</a></li>
+                        <li><a href="#" class="hover:text-pink-300 transition duration-200">Starbucks Reserve Roastery</a></li>
+                        <li><a href="#" class="hover:text-pink-300 transition duration-200">Wukang Building</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="text-lg font-semibold mb-3 text-purple-400">📞 ข้อมูลฉุกเฉิน</h4>
+                    <ul class="text-sm space-y-2">
+                        <li><span class="font-medium">สถานทูตไทย:</span> (+86) 21-5260-9899</li>
+                        <li><span class="font-medium">เบอร์ฉุกเฉินจีน (ตำรวจ):</span> 110</li>
+                        <li><span class="font-medium">โรงแรม:</span> [ชื่อโรงแรม/เบอร์โทร]</li>
+                        <li><span class="font-medium">ผู้ติดต่อในกลุ่ม:</span> [เบอร์โทรหลัก]</li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="text-lg font-semibold mb-3 text-yellow-400">💡 สิ่งที่ต้องเตรียม</h4>
+                    <ul class="text-sm space-y-2">
+                        <li><span class="font-medium">VPN:</span> จำเป็นสำหรับ Social Media</li>
+                        <li><span class="font-medium">เงิน:</span> Alipay / Wechat Pay (สำคัญ!)</li>
+                        <li><span class="font-medium">อะแดปเตอร์:</span> ใช้ปลั๊กแบบ A, C, I (สองขาแบน/กลม)</li>
+                        <li><span class="font-medium">ตั๋ว:</span> พิมพ์ตั๋ว/บัตรจองล่วงหน้า</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="text-center text-gray-500 text-sm">
+                <p>&copy; 2025 Shanghai Trip Planner. จัดทำขึ้นเพื่อการเดินทางส่วนตัวเท่านั้น</p>
+                <p class="mt-1">Disclaimer: แผนนี้อาจมีการเปลี่ยนแปลงตามสถานการณ์จริง</p>
+            </div>
+        </div>
+    </footer>
     <script>
         // DOM Elements
         const dayCards = document.querySelectorAll('.day-card');
@@ -659,17 +711,11 @@
         // Helper function to handle animation end for smoother transition
         function handleNextAnimationEnd(event) {
             event.target.classList.remove('fade-out');
-            if (currentDay < totalDays) {
-                // currentDay++; // This line is not needed if the timeout switches quickly
-                // updateDayView(); // This is handled by the timeout
-            }
+            // Logic to prevent double-increment/decrement if animation is fast
         }
         function handlePrevAnimationEnd(event) {
             event.target.classList.remove('fade-out');
-            if (currentDay > 1) {
-                // currentDay--; // This line is not needed if the timeout switches quickly
-                // updateDayView(); // This is handled by the timeout
-            }
+            // Logic to prevent double-increment/decrement if animation is fast
         }
 
 
