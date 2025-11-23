@@ -6,10 +6,58 @@
     <title>Shanghai Trip Planner 13–17 ต.ค. 2025</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="styles.css" />
-</head>
+    <style>
+        body {
+            font-family: 'Noto Sans Thai', sans-serif;
+        }
+        .card-shadow {
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        @keyframes bounce {
+            0%, 100% {
+                transform: translateY(-25%);
+                animation-timing-function: cubic-bezier(0.8, 0, 1, 1);
+            }
+            50% {
+                transform: translateY(0);
+                animation-timing-function: cubic-bezier(0, 0, 0.2, 1);
+            }
+        }
+        .icon-bounce {
+            animation: bounce 4s infinite;
+        }
+
+        /* สำหรับ Transition การเปลี่ยนวัน */
+        .fade-in {
+            animation: fadeIn 0.5s ease-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateX(10px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        .fade-out {
+            animation: fadeOut 0.5s ease-out forwards;
+        }
+        @keyframes fadeOut {
+            from { opacity: 1; transform: translateX(0); }
+            to { opacity: 0; transform: translateX(-10px); }
+        }
+        .flight-info-content {
+            transition: all 0.3s ease-out;
+            max-height: 0;
+            overflow: hidden;
+            opacity: 0;
+            padding: 0 2rem; /* ตัด padding ออกก่อน collapse */
+        }
+        .flight-info-content.open {
+            max-height: 500px; /* ค่าเผื่อ */
+            opacity: 1;
+            padding: 1.5rem 2rem; /* เพิ่ม padding กลับเข้ามาเมื่อเปิด */
+        }
+
+    </style>
+    </head>
 <body class="min-h-screen bg-gradient-to-br from-pink-50 via-purple-50 to-blue-50">
-    <!-- Header -->
     <header class="relative h-80 bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 overflow-hidden">
         <div class="absolute inset-0 bg-black bg-opacity-20"></div>
         <div class="relative z-10 container mx-auto px-4 h-full flex flex-col justify-center items-center text-white text-center">
@@ -26,26 +74,24 @@
                 </div>
             </div>
         </div>
-        <!-- Decorative elements -->
         <div class="absolute top-10 left-10 text-6xl opacity-20 icon-bounce">🎡</div>
         <div class="absolute bottom-10 right-10 text-4xl opacity-20 icon-bounce" style="animation-delay: 1s;">🎢</div>
     </header>
 
-    <!-- Navigation -->
     <nav class="sticky top-0 z-50 bg-white bg-opacity-90 backdrop-blur-sm shadow-lg">
         <div class="container mx-auto px-4 py-4">
             <div class="flex justify-between items-center">
-                <button id="prevDay" class="flex items-center px-6 py-3 bg-gradient-to-r from-purple-400 to-pink-400 text-white rounded-full hover:from-purple-500 hover:to-pink-500 transition-all duration-300 shadow-lg">
+                <button id="prevDay" class="flex items-center px-6 py-3 bg-gradient-to-r from-purple-400 to-pink-400 text-white rounded-full hover:from-purple-500 hover:to-pink-500 transition-all duration-300 shadow-lg disabled:opacity-50">
                     <span class="text-xl mr-2">←</span>
                     <span class="font-medium">Previous Day</span>
                 </button>
                 
                 <div id="dayIndicator" class="text-center">
-                    <div class="text-2xl font-bold text-gray-800">วันที่ 1</div>
-                    <div class="text-sm text-gray-600">13 ตุลาคม 2025</div>
+                    <div class="text-2xl font-bold text-gray-800" id="currentDayNumber">วันที่ 1</div>
+                    <div class="text-sm text-gray-600" id="currentDayDate">13 ตุลาคม 2025</div>
                 </div>
                 
-                <button id="nextDay" class="flex items-center px-6 py-3 bg-gradient-to-r from-blue-400 to-purple-400 text-white rounded-full hover:from-blue-500 hover:to-purple-500 transition-all duration-300 shadow-lg">
+                <button id="nextDay" class="flex items-center px-6 py-3 bg-gradient-to-r from-blue-400 to-purple-400 text-white rounded-full hover:from-blue-500 hover:to-purple-500 transition-all duration-300 shadow-lg disabled:opacity-50">
                     <span class="font-medium">Next Day</span>
                     <span class="text-xl ml-2">→</span>
                 </button>
@@ -53,12 +99,9 @@
         </div>
     </nav>
 
-    <!-- Main Content -->
     <main class="container mx-auto px-4 py-8">
-        <!-- Day Cards Container -->
         <div id="dayContainer" class="relative overflow-hidden">
-            <!-- Day 1 -->
-            <div class="day-card fade-in" data-day="1">
+            <div class="day-card fade-in" data-day="1" data-date="13 ตุลาคม 2025">
                 <div class="bg-white rounded-3xl p-8 card-shadow mb-8">
                     <div class="flex items-center mb-6">
                         <div class="text-6xl mr-4">✈️</div>
@@ -168,8 +211,7 @@
                 </div>
             </div>
 
-            <!-- Day 2 -->
-            <div class="day-card hidden" data-day="2">
+            <div class="day-card hidden" data-day="2" data-date="14 ตุลาคม 2025">
                 <div class="bg-white rounded-3xl p-8 card-shadow mb-8">
                     <div class="flex items-center mb-6">
                         <div class="text-6xl mr-4">🦀</div>
@@ -272,8 +314,7 @@
                 </div>
             </div>
 
-            <!-- Day 3 -->
-            <div class="day-card hidden" data-day="3">
+            <div class="day-card hidden" data-day="3" data-date="15 ตุลาคม 2025">
                 <div class="bg-white rounded-3xl p-8 card-shadow mb-8">
                     <div class="flex items-center mb-6">
                         <div class="text-6xl mr-4">🏰</div>
@@ -344,8 +385,7 @@
                 </div>
             </div>
 
-            <!-- Day 4 -->
-            <div class="day-card hidden" data-day="4">
+            <div class="day-card hidden" data-day="4" data-date="16 ตุลาคม 2025">
                 <div class="bg-white rounded-3xl p-8 card-shadow mb-8">
                     <div class="flex items-center mb-6">
                         <div class="text-6xl mr-4">🏙️</div>
@@ -447,8 +487,7 @@
                 </div>
             </div>
 
-            <!-- Day 5 -->
-            <div class="day-card hidden" data-day="5">
+            <div class="day-card hidden" data-day="5" data-date="17 ตุลาคม 2025">
                 <div class="bg-white rounded-3xl p-8 card-shadow mb-8">
                     <div class="flex items-center mb-6">
                         <div class="text-6xl mr-4">🛫</div>
@@ -500,7 +539,6 @@
             </div>
         </div>
 
-        <!-- Flight Info Tab -->
         <div class="bg-white rounded-3xl p-8 card-shadow mb-8">
             <button id="flightToggle" class="w-full flex items-center justify-between p-4 bg-gradient-to-r from-blue-400 to-purple-400 text-white rounded-2xl hover:from-blue-500 hover:to-purple-500 transition-all duration-300">
                 <div class="flex items-center">
@@ -509,143 +547,141 @@
                 </div>
                 <span id="flightArrow" class="text-2xl transition-transform duration-300">▼</span>
             </button>
-            
-            <div id="flightInfo" class="hidden mt-6 space-y-4">
-                <div class="grid md:grid-cols-2 gap-6">
-                    <div class="bg-green-50 rounded-2xl p-6">
-                        <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
-                            <span class="text-2xl mr-2">🛫</span>
-                            เที่ยวบินไป
-                        </h3>
-                        <div class="space-y-2 text-sm">
-                            <p><strong>สายการบิน:</strong> XJ (Thai AirAsia X)</p>
-                            <p><strong>เที่ยวบิน:</strong> XJ 760</p>
-                            <p><strong>วันที่:</strong> 13 ตุลาคม 2025</p>
-                            <p><strong>เวลา:</strong> 00:30 - 05:30 (เวลาท้องถิ่น)</p>
-                            <p><strong>เส้นทาง:</strong> DMK → PVG</p>
+            <div id="flightContent" class="flight-info-content">
+                <div class="border-t border-gray-200 pt-6">
+                    <h3 class="text-xl font-bold text-gray-800 mb-4">ขาไป (DMK → PVG)</h3>
+                    <div class="grid grid-cols-2 gap-4 text-gray-700">
+                        <div>
+                            <p class="font-medium">วัน/เวลา:</p>
+                            <p>12 ต.ค. (กลางคืน) → 13 ต.ค. 05:30</p>
+                        </div>
+                        <div>
+                            <p class="font-medium">เส้นทาง:</p>
+                            <p>BKK/DMK → PVG (สนามบินผู่ตง)</p>
                         </div>
                     </div>
-                    
-                    <div class="bg-blue-50 rounded-2xl p-6">
-                        <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
-                            <span class="text-2xl mr-2">🛬</span>
-                            เที่ยวบินกลับ
-                        </h3>
-                        <div class="space-y-2 text-sm">
-                            <p><strong>สายการบิน:</strong> XJ (Thai AirAsia X)</p>
-                            <p><strong>เที่ยวบิน:</strong> XJ 761</p>
-                            <p><strong>วันที่:</strong> 17 ตุลาคม 2025</p>
-                            <p><strong>เวลา:</strong> 06:50 - 09:50 (เวลาท้องถิ่น)</p>
-                            <p><strong>เส้นทาง:</strong> PVG → DMK</p>
+                    <h3 class="text-xl font-bold text-gray-800 mt-6 mb-4">ขากลับ (PVG → DMK)</h3>
+                    <div class="grid grid-cols-2 gap-4 text-gray-700">
+                        <div>
+                            <p class="font-medium">วัน/เวลา:</p>
+                            <p>17 ต.ค. 06:50 → 09:50</p>
+                        </div>
+                        <div>
+                            <p class="font-medium">เที่ยวบิน:</p>
+                            <p>XJ761</p>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-
-        <!-- Must-have Apps Section -->
-        <section class="bg-white rounded-3xl p-8 card-shadow mb-8">
-            <div class="flex items-center justify-between mb-6">
-                <h2 class="text-2xl md:text-3xl font-bold text-gray-800">📲 แอพที่ควรโหลดก่อนเดินทาง</h2>
-            </div>
-            <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                <div class="rounded-2xl p-5 bg-gradient-to-br from-emerald-50 to-teal-100 border border-teal-100">
-                    <div class="flex items-start gap-3">
-                        <div class="text-3xl">💸</div>
-                        <div>
-                            <h3 class="font-semibold text-gray-800">Alipay / WeChat Pay</h3>
-                            <p class="text-gray-600 text-sm mt-1">ใช้จ่ายสะดวกในจีน แนะนำยืนยันตัวตนและผูกบัตรก่อนทริป</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="rounded-2xl p-5 bg-gradient-to-br from-blue-50 to-cyan-100 border border-cyan-100">
-                    <div class="flex items-start gap-3">
-                        <div class="text-3xl">🗺️</div>
-                        <div>
-                            <h3 class="font-semibold text-gray-800">Baidu Map / Amap (高德地图)</h3>
-                            <p class="text-gray-600 text-sm mt-1">แผนที่ที่แม่นยำในจีน ค้นหาเส้นทางขนส่งสาธารณะง่าย</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="rounded-2xl p-5 bg-gradient-to-br from-purple-50 to-fuchsia-100 border border-fuchsia-100">
-                    <div class="flex items-start gap-3">
-                        <div class="text-3xl">🏦</div>
-                        <div>
-                            <h3 class="font-semibold text-gray-800">Shanghai Disney resort</h3>
-                            <p class="text-gray-600 text-sm mt-1">แสกนตั๋วรับส่วนลดร้านอาหาร 30 RMB</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="rounded-2xl p-5 bg-gradient-to-br from-rose-50 to-amber-100 border border-amber-100">
-                    <div class="flex items-start gap-3">
-                        <div class="text-3xl">🚇</div>
-                        <div>
-                            <h3 class="font-semibold text-gray-800">MetroMan</h3>
-                            <p class="text-gray-600 text-sm mt-1">ดูเส้นทาง Metro เซี่ยงไฮ้แบบออฟไลน์ ค้นหาเวลา/ทางออกได้ไว</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
     </main>
 
-    <!-- Footer -->
-    <footer class="bg-gradient-to-r from-purple-600 to-pink-600 text-white py-12">
-        <div class="container mx-auto px-4 text-center">
-            <div class="grid md:grid-cols-2 gap-8 items-center">
-                <div>
-                    <h3 class="text-2xl font-bold mb-4">🗺️ แผนที่และข้อมูลเพิ่มเติม</h3>
-                    <p class="text-lg mb-4">สแกน QR Code เพื่อดาวน์โหลด</p>
-                    <div class="flex justify-center space-x-8">
-                        <div class="text-center">
-                            <a href="https://www.chinadiscovery.com/assets/images/shanghai/transport/shanghai-metro-map.pdf" target="_blank" rel="noopener" class="bg-white p-4 rounded-2xl inline-block mb-2 shadow hover:shadow-md transition">
-                                <div class="w-24 h-24 bg-gray-800 rounded-lg flex items-center justify-center hover:bg-gray-700 transition">
-                                    <span class="text-white text-xs">Metro Map QR</span>
-                                </div>
-                            </a>
-                            <p class="text-sm font-medium">แผนที่รถไฟใต้ดิน</p>
-                            <p class="text-xs opacity-80 mt-1">แตะเพื่อเปิด PDF</p>
-                        </div>
-                        <div class="text-center">
-                            <a href="https://www.lemon8-app.com/topic/7485397524602257426?region=th&pid=website_seo_share" target="_blank" rel="noopener" class="bg-white p-4 rounded-2xl inline-block mb-2 shadow hover:shadow-md transition">
-                                <div class="w-24 h-24 bg-pink-600 rounded-lg flex items-center justify-center hover:bg-pink-500 transition">
-                                    <span class="text-white text-xs">🍣 รีวิวร้านอาหาร</span>
-                                </div>
-                            </a>
-                            <p class="text-sm font-medium">รีวิวร้านอาหาร Lemon8</p>
-                            <p class="text-xs opacity-80 mt-1">แตะเพื่อเปิดลิงก์</p>
-                        </div>
-                        <div class="text-center">
-                            <a href="http://bit.ly/4ltBYKs" target="_blank" rel="noopener" class="bg-white p-4 rounded-2xl inline-block mb-2 shadow hover:shadow-md transition">
-                                <div class="w-24 h-24 bg-pink-600 rounded-lg flex items-center justify-center hover:bg-pink-500 transition">
-                                    <span class="text-white text-xs">🍣 รีวิวร้านชานม</span>
-                                </div>
-                            </a>
-                            <p class="text-sm font-medium">รีวิวร้านชานม Lemon8</p>
-                            <p class="text-xs opacity-80 mt-1">แตะเพื่อเปิดลิงก์</p>
-                        </div>
-                    </div>
-                </div>
-                
-                <div>
-                    <h3 class="text-2xl font-bold mb-4">📱 Tips สำหรับทริป</h3>
-                    <ul class="text-left space-y-2">
-                        <li>• ดาวน์โหลดแอป Alipay / Wechat สำหรับจ่ายเงิน</li>
-                        <li>• แลกเงินหยวนล่วงหน้า</li>
-                        <li>• ขอใบเสร็จสำหรับ Tax Refund</li>
-                        <li>• จดหมายเลขโรงแรมเป็นภาษาจีน</li>
-                    </ul>
-                </div>
-            </div>
-            
-            <div class="mt-8 pt-8 border-t border-white border-opacity-20">
-                <p class="text-sm md:text-base opacity-90 text-center tracking-wide">
-                    COPYRIGHT © 2025 CN INTERCON. COMPANY LIMITED  ALL RIGHTS RESERVED.
-                </p>
-            </div>
-        </div>
-    </footer>
+    <script>
+        // DOM Elements
+        const dayCards = document.querySelectorAll('.day-card');
+        const prevDayButton = document.getElementById('prevDay');
+        const nextDayButton = document.getElementById('nextDay');
+        const currentDayNumber = document.getElementById('currentDayNumber');
+        const currentDayDate = document.getElementById('currentDayDate');
+        const totalDays = dayCards.length;
+        
+        // Flight Toggle Elements
+        const flightToggle = document.getElementById('flightToggle');
+        const flightContent = document.getElementById('flightContent');
+        const flightArrow = document.getElementById('flightArrow');
 
-    <script src="script.js"></script>
+        let currentDay = 1;
+
+        // Function to update the view based on the current day
+        function updateDayView() {
+            // Update Navigation Indicator
+            currentDayNumber.textContent = `วันที่ ${currentDay}`;
+            const currentCard = document.querySelector(`.day-card[data-day="${currentDay}"]`);
+            currentDayDate.textContent = currentCard ? currentCard.getAttribute('data-date') : '';
+
+            // Update Visibility and Animation
+            dayCards.forEach(card => {
+                const day = parseInt(card.getAttribute('data-day'));
+                if (day === currentDay) {
+                    card.classList.remove('hidden', 'fade-out');
+                    card.classList.add('fade-in');
+                } else {
+                    card.classList.add('hidden');
+                    card.classList.remove('fade-in');
+                }
+            });
+
+            // Update Button States
+            prevDayButton.disabled = currentDay === 1;
+            nextDayButton.disabled = currentDay === totalDays;
+        }
+
+        // Event listener for Next Day button
+        nextDayButton.addEventListener('click', () => {
+            if (currentDay < totalDays) {
+                // Add fade-out animation to current card before switching
+                const currentCard = document.querySelector(`.day-card[data-day="${currentDay}"]`);
+                if (currentCard) {
+                    currentCard.classList.add('fade-out');
+                    currentCard.addEventListener('animationend', handleNextAnimationEnd, { once: true });
+                }
+                
+                // If animation is too slow, switch quickly
+                setTimeout(() => {
+                    if (currentDay < totalDays) {
+                        currentDay++;
+                        updateDayView();
+                    }
+                }, 100); 
+            }
+        });
+
+        // Event listener for Previous Day button
+        prevDayButton.addEventListener('click', () => {
+            if (currentDay > 1) {
+                // Add fade-out animation to current card before switching
+                const currentCard = document.querySelector(`.day-card[data-day="${currentDay}"]`);
+                if (currentCard) {
+                    currentCard.classList.add('fade-out');
+                    currentCard.addEventListener('animationend', handlePrevAnimationEnd, { once: true });
+                }
+                
+                // If animation is too slow, switch quickly
+                setTimeout(() => {
+                    if (currentDay > 1) {
+                        currentDay--;
+                        updateDayView();
+                    }
+                }, 100); 
+            }
+        });
+
+        // Helper function to handle animation end for smoother transition
+        function handleNextAnimationEnd(event) {
+            event.target.classList.remove('fade-out');
+            if (currentDay < totalDays) {
+                // currentDay++; // This line is not needed if the timeout switches quickly
+                // updateDayView(); // This is handled by the timeout
+            }
+        }
+        function handlePrevAnimationEnd(event) {
+            event.target.classList.remove('fade-out');
+            if (currentDay > 1) {
+                // currentDay--; // This line is not needed if the timeout switches quickly
+                // updateDayView(); // This is handled by the timeout
+            }
+        }
+
+
+        // Event listener for Flight Info Toggle
+        flightToggle.addEventListener('click', () => {
+            const isOpened = flightContent.classList.toggle('open');
+            flightArrow.style.transform = isOpened ? 'rotate(180deg)' : 'rotate(0deg)';
+        });
+
+        // Initialize the view on page load
+        document.addEventListener('DOMContentLoaded', updateDayView);
+
+    </script>
 </body>
 </html>
